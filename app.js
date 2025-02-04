@@ -13,7 +13,19 @@ app.get('/usuario/:id', (req, res) => {
  
 app.get('/produto/:nome/:preco', (req, res) => {
     const { nome, preco } = req.params;
-    res.send(`Produto: O ${nome} custa R$${preco}.`);
+
+    const precoFormatado = Number(preco).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    });
+    
+    const agora = new Date();
+    const data = agora.toLocaleDateString('pt-BR');
+    const hora = agora.toLocaleTimeString('pt-BR', { hour12: false });
+
+    const mensagem = `Produto: ${nome} | Preço: ${precoFormatado} | Consultado em: ${data} às ${hora}`;
+
+    res.send(mensagem);
 });
 
 app.listen(PORT, () => {
